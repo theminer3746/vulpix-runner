@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 class GetAJob extends Command
 {
@@ -39,10 +40,22 @@ class GetAJob extends Command
     {
         // Check if a runner is available
 
-        // Assign the runner
+        // Get a job
+        $response = Http::withToken('runner1')
+        ->get('http://10.2.101.62:8090/api/tests', [
+            'status' => 'available',
+            'limit' => 1,
+        ]);
+
+        if(!$response->successful())
+        {
+            return 1;
+        }
+
+        // Assign a runner
 
         // Execute the command
-        $result = shell_exec("python3 test_script.py");
+        $result = shell_exec("python3 main.py 192.168.56.107:5555 " . $response->json()[0]["applicationId"] . " 10.0.112.2");
         echo($result);
 
         // Interpret the result
