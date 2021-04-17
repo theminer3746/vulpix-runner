@@ -55,8 +55,9 @@ class GetAJob extends Command
         // Assign a runner
 
         // Execute the command
-        $result = shell_exec("python3 main.py 192.168.56.107:5555 " . $response->json()[0]["applicationId"] . " 10.0.112.2");
-        echo($result);
+        $command = "python3 main.py 10.0.112.12:5555 " . $response->json()[0]["applicationId"] . " 10.0.112.2";
+        $result = shell_exec("cd automated-gui-tester && $command");
+        var_dump($result);
 
         // Interpret the result
 
