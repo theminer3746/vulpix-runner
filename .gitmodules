@@ -1,0 +1,3 @@
+[submodule "automated-gui-tester"]
+	path = automated-gui-tester
+	url = https://github.com/nisaruj/automated-gui-tester
