@@ -41,11 +41,12 @@ class GetAJob extends Command
         // Check if a runner is available
 
         // Get a job
-        $endpoint = env('VULPIX__REAL_BACKEND_DOMAIN', 'https://vulpix-real-backend.theminerdev.com/api/tests');
+        $endpoint = env('VULPIX_REAL_BACKEND_DOMAIN', 'https://vulpix-real-backend.theminerdev.com');
         $response = Http::withToken('runner1')
         ->get("$endpoint/api/tests", [
             'status' => 'available',
             'limit' => 1,
+            'mark_as_running' => true,
         ]);
 
         if(!$response->successful())
@@ -53,16 +54,25 @@ class GetAJob extends Command
             return 1;
         }
 
-        // Assign a runner
+        if (count($response->json()) == 1)
+        {
+            // Assign a runner
 
-        // Execute the command
-        $command = "python3 main.py 192.168.56.106:5555 " . $response->json()[0]["application_id"] . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
-        $result = shell_exec("cd automated-gui-tester && $command");
-        var_dump($result);
+            // Execute the command
+            $command = "python3 main.py 192.168.56.106:5555 " . $response->json()[0]["application_id"] . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
+            $result = shell_exec("cd automated-gui-tester && $command");
+            var_dump($result);
 
-        // Interpret the result
+            // Interpret the result
 
-        // Free the runner
+            // Free the runner
+
+        }
+        else 
+        {
+            throw new \Exception();
+        }
+
 
         return 0;
     }
