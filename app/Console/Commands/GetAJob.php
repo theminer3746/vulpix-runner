@@ -41,8 +41,9 @@ class GetAJob extends Command
         // Check if a runner is available
 
         // Get a job
+        $endpoint = env('VULPIX__REAL_BACKEND_DOMAIN', 'https://vulpix-real-backend.theminerdev.com/api/tests');
         $response = Http::withToken('runner1')
-        ->get('http://10.2.101.62:8090/api/tests', [
+        ->get("$endpoint/api/tests", [
             'status' => 'available',
             'limit' => 1,
         ]);
