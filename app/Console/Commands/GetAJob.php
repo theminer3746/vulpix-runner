@@ -55,7 +55,7 @@ class GetAJob extends Command
         // Assign a runner
 
         // Execute the command
-        $command = "python3 main.py 192.168.56.106:5555 " . $response->json()[0]["applicationId"] . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
+        $command = "python3 main.py 192.168.56.106:5555 " . $response->json()[0]["application_id"] . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
         $result = shell_exec("cd automated-gui-tester && $command");
         var_dump($result);
 
