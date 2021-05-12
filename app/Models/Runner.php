@@ -12,7 +12,7 @@ class Runner extends Model
 
     protected $fillable = [
         'proxy_port',
-        'adb_port',
+        'device_port',
         'appium_port',
         'system_port',
         'android_version',

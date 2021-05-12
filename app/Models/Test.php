@@ -11,8 +11,8 @@ class Test extends Model
     use HasFactory;
 
     protected $fillable = [
-        'apk_id',
-        'app_version',
+        'application_id',
+        'application_version',
         'assigned_at',
         'done_at',
     ];

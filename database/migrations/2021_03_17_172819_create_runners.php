@@ -15,10 +15,12 @@ class CreateRunners extends Migration
     {
         Schema::create('runners', function (Blueprint $table) {
             $table->id();
+            $table->string('device_ip');
+            $table->unsignedSmallInteger('device_port')->default(5555);
+            $table->string('proxy_ip');
             $table->unsignedSmallInteger('proxy_port');
-            $table->unsignedSmallInteger('adb_port')->default(5555);
+            $table->unsignedSmallInteger('system_port')->default(12000);
             $table->unsignedSmallInteger('appium_port')->default(4723);
-            $table->unsignedSmallInteger('system_port')->default(8200);
             $table->string('android_version')->nullable();
             $table->string('status');
             $table->timestamps();

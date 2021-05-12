@@ -15,8 +15,8 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('apk_id')->nullable();
-            $table->string('app_version')->nullable();
+            $table->string('application_id')->nullable();
+            $table->string('application_version')->nullable();
             $table->dateTime('assigned_at')->nullable();
             $table->dateTime('done_at')->nullable();
             $table->timestamps();
