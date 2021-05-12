@@ -38,6 +38,6 @@ class Runner extends Model
     
     public function canCreateMoreRunner()
     {
-        return $this->runner->where('status', '!=', 'exited')->count() < env('MAX_RUNNER', 1);
+        return $this->runner->where('status', '!=', 'exited')->count() < config('runner.max_runner');
     }
 }
