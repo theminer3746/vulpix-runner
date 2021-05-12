@@ -80,6 +80,8 @@ class GetAJob extends Command
                 ->setEndPoint("https://vulpix-real-backend.theminerdev.com/api/results")
                 ->getCommand();
 
+            echo("Running : $command");
+
             exec("cd automated-gui-tester && $command", $result, $resultCode);
             var_dump($result);
 
