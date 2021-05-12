@@ -42,7 +42,7 @@ class GetAJob extends Command
 
         // Get a job
         $endpoint = env('VULPIX_REAL_BACKEND_DOMAIN', 'https://vulpix-real-backend.theminerdev.com');
-        $response = Http::withToken('runner1')
+        $response = Http::withToken(config('runner.id'))
         ->get("$endpoint/api/tests", [
             'status' => 'available',
             'limit' => 1,
