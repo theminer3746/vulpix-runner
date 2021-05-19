@@ -1,3 +1,6 @@
 [submodule "automated-gui-tester"]
 	path = automated-gui-tester
 	url = https://github.com/nisaruj/automated-gui-tester
+[submodule "flowdroid-automated"]
+	path = flowdroid-automated
+	url = https://github.com/theminer3746/FlowDroid-automated
