@@ -66,6 +66,7 @@ class GetAJob extends Command
 
         if (count($response->json()) == 1)
         {
+            $baseDir = getcwd();
             $application_id = $response->json()[0]["application_id"];
 
             $test = (new \App\Models\Test);
@@ -88,7 +89,7 @@ class GetAJob extends Command
 
             echo("Running : $dynamicCommand");
 
-            exec("cd automated-gui-tester && $dynamicCommand", $dynamicResult, $dynamicResultCode);
+            exec("cd $baseDir && cd automated-gui-tester && $dynamicCommand", $dynamicResult, $dynamicResultCode);
             var_dump($dynamicResult);
 
             // Handle error
@@ -106,7 +107,7 @@ class GetAJob extends Command
                 'main.py',
                 $application_id,
             ]);
-            exec("cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
+            exec("cd $baseDir && cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
             var_dump($staticResult);
         }
         else 
