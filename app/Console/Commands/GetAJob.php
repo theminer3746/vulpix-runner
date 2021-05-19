@@ -109,6 +109,12 @@ class GetAJob extends Command
             ]);
             exec("cd $baseDir && cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
             var_dump($staticResult);
+
+            // Handle error
+            if ($staticResultCode !== 0)
+            {
+                // Tell manager there's an error
+            }
         }
         else 
         {
