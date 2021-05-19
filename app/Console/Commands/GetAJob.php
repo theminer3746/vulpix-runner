@@ -103,6 +103,7 @@ class GetAJob extends Command
                 $application_id,
             ]);
             exec("cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
+            var_dump($staticResult);
         }
         else 
         {
