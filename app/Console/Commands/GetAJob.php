@@ -62,8 +62,10 @@ class GetAJob extends Command
 
         if (count($response->json()) == 1)
         {
+            $application_id = $response->json()[0]["application_id"];
+
             $test = (new \App\Models\Test);
-            $test->application_id = $response->json()[0]["application_id"];
+            $test->application_id = $application_id;
             $test->assigned_at = now();
 
             // Assign a runner
@@ -72,8 +74,8 @@ class GetAJob extends Command
             $runner->save();
 
             // Execute the command
-            // $command = "python3 main.py 192.168.56.106:5555 " . $response->json()[0]["application_id"] . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
-            $command = (new \App\CommandBuilder($runner->device_ip, $runner->device_port, $response->json()[0]["application_id"], $runner->proxy_ip))
+            // $command = "python3 main.py 192.168.56.106:5555 " . $application_id . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
+            $dynamicCommand = (new \App\CommandBuilder($runner->device_ip, $runner->device_port, $application_id, $runner->proxy_ip))
                 ->setProxyPort($runner->proxy_port)
                 ->setSystemPort($runner->system_port)
                 ->setAppiumPort($runner->appium_port)
@@ -82,11 +84,11 @@ class GetAJob extends Command
 
             echo("Running : $command");
 
-            exec("cd automated-gui-tester && $command", $result, $resultCode);
-            var_dump($result);
+            exec("cd automated-gui-tester && $dynamicCommand", $dynamicResult, $dynamicResultCode);
+            var_dump($dynamicResult);
 
             // Handle error
-            if ($resultCode !== 0)
+            if ($dynamicResultCode !== 0)
             {
                 // Tell manager there's an error
             }
