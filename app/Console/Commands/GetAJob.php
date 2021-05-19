@@ -96,6 +96,13 @@ class GetAJob extends Command
             // Free the runner
             $runner->status = 'available';
             $runner->save();
+
+            $staticCommand = implode(" ", [
+                'python3',
+                'main.py',
+                $application_id,
+            ]);
+            exec("cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
         }
         else 
         {
