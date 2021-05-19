@@ -43,6 +43,8 @@ class GetAJob extends Command
         if (is_null($runner))
         {
             // No runner available
+            echo("No runner available\n");
+
             return 0;
         }
 
@@ -57,6 +59,8 @@ class GetAJob extends Command
 
         if(!$response->successful())
         {
+            echo("No apps found\n");
+
             return 0;
         }
 
