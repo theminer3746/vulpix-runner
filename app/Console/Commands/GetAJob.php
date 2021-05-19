@@ -59,7 +59,7 @@ class GetAJob extends Command
 
         if(!$response->successful())
         {
-            echo("No apps found\n");
+            echo("Application queue is empty\n");
 
             return 0;
         }
