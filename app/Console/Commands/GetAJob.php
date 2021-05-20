@@ -21,6 +21,20 @@ class GetAJob extends Command
      */
     protected $description = 'Get a job to run if there is a runner available';
 
+    private $error = [
+        "UNKNOWN_ERROR" => 1,
+        "DEVICE_OFFLINE" => 2,
+        "DYNAMIC_TEST_ERROR" => 10,
+        "TIMEOUT_ERROR" => 11,
+        "PAID_APP_ERROR" => 12,
+        "NOT_SUPPORTED_ERROR" => 13,
+        "GAMES_CAT_ERROR" => 14,
+        "APP_NOT_FOUND_ERROR" => 15,
+        "ANALYZER_ERROR" => 20,
+        "EXTERNAL_INTERFACE_ERROR" => 30,
+        "BAD_INPUT_ERROR" => 40,
+    ];
+
     /**
      * Create a new command instance.
      *
@@ -93,9 +107,22 @@ class GetAJob extends Command
             var_dump($dynamicResult);
 
             // Handle error
-            if ($dynamicResultCode !== 0)
+            if ($dynamicResultCode != 0)
             {
                 // Tell manager there's an error
+                $response = Http::post('https://vulpix-real-backend.theminerdev.com/api/results', [
+                    'status' => 'error',
+                    'appInfo' => [
+                        'identifier' => $application_id,
+                    ],
+                    'result' => [
+                        'version' => null,
+                        'testingMethod' => 'DYNAMIC_ONLY',
+                    ],
+                    'error' => array_search($dynamicResultCode, $this->error),
+                ]);
+
+                Log::debug("Dynamic error reponse : " . $addAppResponse->body());
             }
 
             // Free the runner
@@ -113,9 +140,22 @@ class GetAJob extends Command
             var_dump($staticResult);
 
             // Handle error
-            if ($staticResultCode !== 0)
+            if ($staticResultCode != 0)
             {
                 // Tell manager there's an error
+                $response = Http::post('https://vulpix-real-backend.theminerdev.com/api/results', [
+                    'status' => 'error',
+                    'appInfo' => [
+                        'identifier' => $application_id,
+                    ],
+                    'result' => [
+                        'version' => null,
+                        'testingMethod' => 'STATIC_ONLY',
+                    ],
+                    'error' => 'UNKNOWN_ERROR',
+                ]);
+
+                Log::debug("Dynamic error reponse : " . $addAppResponse->body());
             }
         }
         else 
