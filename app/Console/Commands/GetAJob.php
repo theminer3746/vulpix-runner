@@ -35,6 +35,41 @@ class GetAJob extends Command
         "BAD_INPUT_ERROR" => 40,
     ];
 
+    private $emptyPII = [
+        "advertiserId" => 0,
+		"androidId" => 0,
+		"deviceSerialNumber" => 0,
+		"googleServicesId" => 0,
+		"imei" => 0,
+		"macAddress" => 0,
+		"cellId" => 0,
+		"simSerialNumber" => 0,
+		"imsi" => 0,
+		"localAreaCode" => 0,
+		"phoneNumber" => 0,
+		"age" => 0,
+		"audioRecording" => 0,
+		"calendar" => 0,
+		"contactBook" => 0,
+		"country" => 0,
+		"ccv" => 0,
+		"dob" => 0,
+		"email" => 0,
+		"gender" => 0,
+		"name" => 0,
+		"password" => 0,
+		"photo" => 0,
+		"physicalAddress" => 0,
+		"relationshipStatus" => 0,
+		"sms" => 0,
+		"ssn" => 0,
+		"timezone" => 0,
+		"username" => 0,
+		"video" => 0,
+		"webBrowsingLog" => 0,
+		"gps" => 0,
+    ];
+
     /**
      * Create a new command instance.
      *
@@ -115,10 +150,10 @@ class GetAJob extends Command
                     'appInfo' => [
                         'identifier' => $application_id,
                     ],
-                    'result' => [
+                    'result' => array_merge([
                         'version' => null,
                         'testingMethod' => 'DYNAMIC_ONLY',
-                    ],
+                    ], $this->emptyPII),
                     'error' => array_search($dynamicResultCode, $this->error),
                 ]);
 
@@ -148,10 +183,10 @@ class GetAJob extends Command
                     'appInfo' => [
                         'identifier' => $application_id,
                     ],
-                    'result' => [
+                    'result' => array_merge([
                         'version' => null,
                         'testingMethod' => 'STATIC_ONLY',
-                    ],
+                    ], $this->emptyPII),
                     'error' => 'UNKNOWN_ERROR',
                 ]);
 
