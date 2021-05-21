@@ -49,7 +49,7 @@ class ResetRunner extends Command
             });
         }
 
-        DB::table('runners')->update([
+        $runner->update([
             'status' => 'available',
         ]);
 
