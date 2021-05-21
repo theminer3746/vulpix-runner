@@ -159,7 +159,7 @@ class GetAJob extends Command
                     'error' => array_search($dynamicResultCode, $this->error),
                 ]);
 
-                Log::debug("Dynamic error reponse : " . $addAppResponse->body());
+                // Log::debug("Dynamic error reponse : " . $response->body());
             }
 
             // Free the runner
@@ -195,7 +195,7 @@ class GetAJob extends Command
                     'error' => 'UNKNOWN_ERROR',
                 ]);
 
-                Log::debug("Dynamic error reponse : " . $addAppResponse->body());
+                // Log::debug("Dynamic error reponse : " . $response->body());
             }
         }
         else 
