@@ -134,6 +134,7 @@ class GetAJob extends Command
                 ->setSystemPort($runner->system_port)
                 ->setAppiumPort($runner->appium_port)
                 ->setEndPoint("https://vulpix-real-backend.theminerdev.com/api/results")
+                ->setTimeout('300')
                 ->getCommand();
 
             echo("Running : $dynamicCommand");

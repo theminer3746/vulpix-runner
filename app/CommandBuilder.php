@@ -8,6 +8,7 @@ class CommandBuilder
     protected string $systemPort;
     protected string $appiumPort;
     protected string $endPoint;
+    protected string $timeout;
     
     public function __construct(
         protected string $deviceIp,
@@ -46,6 +47,13 @@ class CommandBuilder
         return $this;
     }
 
+    public function setTimeout(string $timeout)
+    {
+        $this->timeout = $timeout;
+    
+        return $this;
+    }
+
     public function getCommand()
     {
         $command = [
@@ -75,6 +83,11 @@ class CommandBuilder
         if (isset($this->endPoint))
         {
             $command[] = "--endpoint $this->endPoint";
+        }
+
+        if (isset($this->timeout))
+        {
+            $command[] = "--timeout $this->timeout";
         }
 
         return implode(" ", $command);
