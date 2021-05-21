@@ -164,6 +164,9 @@ class GetAJob extends Command
             $runner->status = 'available';
             $runner->save();
 
+            $test->done_at = now();
+            $test->save();
+            
             $staticCommand = implode(" ", [
                 'python3',
                 'main.py',
