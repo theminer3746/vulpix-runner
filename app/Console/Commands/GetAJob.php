@@ -176,7 +176,7 @@ class GetAJob extends Command
                 '--endpoint', "https://vulpix-real-backend.theminerdev.com/api/results",
                 '--timeout', '600',
             ]);
-            echo("Running : $staticCommand");
+            echo("Running : $staticCommand\n");
             exec("cd $baseDir && cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
             var_dump($staticResult);
 
