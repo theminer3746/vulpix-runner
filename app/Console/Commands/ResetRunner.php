@@ -39,14 +39,19 @@ class ResetRunner extends Command
      */
     public function handle()
     {
-        $runner = new \App\Models\Runner;
+        $runner = DB::table('runners');
         
         if (!$this->option('force'))
         {
-            $runner = $runner->whereHas('tests', function (Builder $q) {
-                $q->where('done_at', null)
-                    ->where('assigned_at', '<', now()->subminute(35));
-            });
+            // TODO : FIX BUG
+            $runner = $runnerwhere(function($q){
+                $q->select('tests.assigned_at')
+                    ->from('tests')
+                    ->whereColumn('runners.id', 'tests.runner_id')
+                    ->whereNull('tests.done_at')
+                    ->orderByDesc('tests.assigned_at')
+                    ->limit(1);
+            }, '<', now()->subminute(35));
         }
 
         $runner->update([
