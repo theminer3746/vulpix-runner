@@ -138,7 +138,7 @@ class GetAJob extends Command
                 ->setTimeout('600')
                 ->getCommand();
 
-            echo("Running : $dynamicCommand");
+            echo("Running : $dynamicCommand\n");
 
             exec("cd $baseDir && cd automated-gui-tester && $dynamicCommand", $dynamicResult, $dynamicResultCode);
             var_dump($dynamicResult);
