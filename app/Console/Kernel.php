@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call('get_a_job')->everyMinute();
+        $schedule->command('vulpix:getJob')->everyMinute();
     }
 
     /**
