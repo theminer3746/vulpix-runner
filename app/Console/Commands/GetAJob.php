@@ -180,6 +180,8 @@ class GetAJob extends Command
             exec("cd $baseDir && cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
             var_dump($staticResult);
 
+            // TODO: Terminate process that's binded to $runner->proxy_port and $runner->appium_port
+
             // Handle error
             if ($staticResultCode != 0)
             {
