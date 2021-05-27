@@ -40,11 +40,10 @@ class ResetRunner extends Command
     public function handle()
     {
         $runner = DB::table('runners');
-        
-        if (!$this->option('force'))
-        {
+
+        if (!$this->option('force')) {
             // TODO : FIX BUG
-            $runner = $runnerwhere(function($q){
+            $runner = $runner->where(function ($q) {
                 $q->select('tests.assigned_at')
                     ->from('tests')
                     ->whereColumn('runners.id', 'tests.runner_id')
