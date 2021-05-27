@@ -38,37 +38,37 @@ class GetAJob extends Command
 
     private $emptyPII = [
         "advertiserId" => 0,
-		"androidId" => 0,
-		"deviceSerialNumber" => 0,
-		"googleServicesId" => 0,
-		"imei" => 0,
-		"macAddress" => 0,
-		"cellId" => 0,
-		"simSerialNumber" => 0,
-		"imsi" => 0,
-		"localAreaCode" => 0,
-		"phoneNumber" => 0,
-		"age" => 0,
-		"audioRecording" => 0,
-		"calendar" => 0,
-		"contactBook" => 0,
-		"country" => 0,
-		"ccv" => 0,
-		"dob" => 0,
-		"email" => 0,
-		"gender" => 0,
-		"name" => 0,
-		"password" => 0,
-		"photo" => 0,
-		"physicalAddress" => 0,
-		"relationshipStatus" => 0,
-		"sms" => 0,
-		"ssn" => 0,
-		"timezone" => 0,
-		"username" => 0,
-		"video" => 0,
-		"webBrowsingLog" => 0,
-		"gps" => 0,
+        "androidId" => 0,
+        "deviceSerialNumber" => 0,
+        "googleServicesId" => 0,
+        "imei" => 0,
+        "macAddress" => 0,
+        "cellId" => 0,
+        "simSerialNumber" => 0,
+        "imsi" => 0,
+        "localAreaCode" => 0,
+        "phoneNumber" => 0,
+        "age" => 0,
+        "audioRecording" => 0,
+        "calendar" => 0,
+        "contactBook" => 0,
+        "country" => 0,
+        "ccv" => 0,
+        "dob" => 0,
+        "email" => 0,
+        "gender" => 0,
+        "name" => 0,
+        "password" => 0,
+        "photo" => 0,
+        "physicalAddress" => 0,
+        "relationshipStatus" => 0,
+        "sms" => 0,
+        "ssn" => 0,
+        "timezone" => 0,
+        "username" => 0,
+        "video" => 0,
+        "webBrowsingLog" => 0,
+        "gps" => 0,
     ];
 
     /**
@@ -90,10 +90,9 @@ class GetAJob extends Command
     {
         // Check if a runner is available
         $runner = (new \App\Models\Runner)->where('status', 'available')->first();
-        if (is_null($runner))
-        {
+        if (is_null($runner)) {
             // No runner available
-            echo("No runner available\n");
+            echo ("No runner available\n");
 
             return 0;
         }
@@ -101,21 +100,19 @@ class GetAJob extends Command
         // Get a job
         $endpoint = env('VULPIX_REAL_BACKEND_DOMAIN', 'https://vulpix-real-backend.theminerdev.com');
         $response = Http::withToken(config('runner.id'))
-        ->get("$endpoint/api/tests", [
-            'status' => 'available',
-            'limit' => 1,
-            'mark_as_running' => true,
-        ]);
+            ->get("$endpoint/api/tests", [
+                'status' => 'available',
+                'limit' => 1,
+                'mark_as_running' => true,
+            ]);
 
-        if(!$response->successful())
-        {
-            echo("Application queue is empty\n");
+        if (!$response->successful()) {
+            echo ("Application queue is empty\n");
 
             return 0;
         }
 
-        if (count($response->json()) == 1)
-        {
+        if (count($response->json()) == 1) {
             $baseDir = getcwd();
             $application_id = $response->json()[0]["application_id"];
 
@@ -138,14 +135,13 @@ class GetAJob extends Command
                 ->setTimeout('600')
                 ->getCommand();
 
-            echo("Running : $dynamicCommand\n");
+            echo ("Running : $dynamicCommand\n");
 
             exec("cd $baseDir && cd automated-gui-tester && $dynamicCommand", $dynamicResult, $dynamicResultCode);
             var_dump($dynamicResult);
 
             // Handle error
-            if ($dynamicResultCode != 0)
-            {
+            if ($dynamicResultCode != 0) {
                 // Tell manager there's an error
                 $response = Http::post('https://vulpix-real-backend.theminerdev.com/api/results', [
                     'status' => 'error',
@@ -168,7 +164,7 @@ class GetAJob extends Command
 
             $test->done_at = now();
             $test->save();
-            
+
             $staticCommand = implode(" ", [
                 'python3',
                 'main.py',
@@ -176,15 +172,12 @@ class GetAJob extends Command
                 '--endpoint', "https://vulpix-real-backend.theminerdev.com/api/results",
                 '--timeout', '600',
             ]);
-            echo("Running : $staticCommand\n");
+            echo ("Running : $staticCommand\n");
             exec("cd $baseDir && cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
             var_dump($staticResult);
 
-            // TODO: Terminate process that's binded to $runner->proxy_port and $runner->appium_port
-
             // Handle error
-            if ($staticResultCode != 0)
-            {
+            if ($staticResultCode != 0) {
                 // Tell manager there's an error
                 $response = Http::post('https://vulpix-real-backend.theminerdev.com/api/results', [
                     'status' => 'error',
@@ -200,9 +193,9 @@ class GetAJob extends Command
 
                 // Log::debug("Dynamic error reponse : " . $response->body());
             }
-        }
-        else 
-        {
+
+            // TODO : Terminate process that's binded to $runner->proxy_port and $runner->appium_port
+        } else {
             throw new \Exception();
         }
 
