@@ -194,7 +194,10 @@ class GetAJob extends Command
                 // Log::debug("Dynamic error reponse : " . $response->body());
             }
 
-            // TODO : Terminate process that's binded to $runner->proxy_port and $runner->appium_port
+            // Terminate process that's binded to $runner->proxy_port and $runner->appium_port
+            // In case they were not killed
+            exec("cd $baseDir && cd scripts && bash terminator.sh $runner->proxy_port", $killResult, $killResultCode);
+            exec("cd $baseDir && cd scripts && bash terminator.sh $runner->appium_port", $killResult, $killResultCode);
         } else {
             throw new \Exception();
         }
