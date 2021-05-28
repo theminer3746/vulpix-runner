@@ -119,6 +119,7 @@ class GetAJob extends Command
             $test = (new \App\Models\Test);
             $test->application_id = $application_id;
             $test->assigned_at = now();
+            $test->uuid = $response->json()[0]["uuid"];
 
             // Assign a runner
             $runner->status = 'running';
@@ -128,6 +129,7 @@ class GetAJob extends Command
             // Execute the command
             // $command = "python3 main.py 192.168.56.106:5555 " . $application_id . " 10.0.112.2 --proxy_port 8090 --system_port 12000 --appium_port 3000 --endpoint https://vulpix-real-backend.theminerdev.com/api/results";
             $dynamicCommand = (new \App\CommandBuilder($runner->device_ip, $runner->device_port, $application_id, $runner->proxy_ip))
+                ->setUuid($test->uuid)
                 ->setProxyPort($runner->proxy_port)
                 ->setSystemPort($runner->system_port)
                 ->setAppiumPort($runner->appium_port)
@@ -171,6 +173,7 @@ class GetAJob extends Command
                 $application_id,
                 '--endpoint', "https://vulpix-real-backend.theminerdev.com/api/results",
                 '--timeout', '600',
+                '--uuid', $test->uuid,
             ]);
             echo ("Running : $staticCommand\n");
             exec("cd $baseDir && cd flowdroid-automated && $staticCommand", $staticResult, $staticResultCode);
